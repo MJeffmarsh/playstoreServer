@@ -8,7 +8,7 @@ app.use(morgan('common'));
 const apps = require('./playstore-Data.js');
 
 app.get('/apps', (req, res) => {
-  const { search = ' ', sort, genre } = req.query;
+  const { search = ' ', sort, genres } = req.query;
 
   if (sort) {
     if (!['Rating', 'App'].includes(sort)) {
@@ -16,11 +16,17 @@ app.get('/apps', (req, res) => {
     }
   }
 
-  if (genre) {
+  if (genres) {
     if (
-      !['Action', 'Puzzle', 'Strategy', 'Casual', 'Arcade', 'Card'].includes(
-        genre
-      )
+      ![
+        'Action',
+        'Puzzle',
+        'Strategy',
+        'Casual',
+        'Arcade',
+        'Card',
+        'Free'
+      ].includes(genres)
     ) {
       return res
         .status(400)
@@ -40,7 +46,11 @@ app.get('/apps', (req, res) => {
     });
   }
 
-  res.json(results);
+  endResults = results.filter(app =>
+    app.Genres.toLowerCase().includes(genres.toLowerCase())
+  );
+
+  res.json(endResults);
 });
 
 app.listen(8000, () => {
