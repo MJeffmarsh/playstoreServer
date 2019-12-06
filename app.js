@@ -47,12 +47,10 @@ app.get('/apps', (req, res) => {
   }
 
   endResults = results.filter(app =>
-    app.Genres.toLowerCase().includes(genres.toLowerCase())
+    app.Genres.toLowerCase().includes(search.toLowerCase())
   );
 
   res.json(endResults);
 });
 
-app.listen(8000, () => {
-  console.log('Server started on PORT 8000');
-});
+module.exports = app;
